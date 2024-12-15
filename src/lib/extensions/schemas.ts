@@ -7,14 +7,14 @@ export const versionSchema = z
   .refine((v) => /^\d+\.\d+\.\d+[ab]?$/.test(v));
 
 export const metadataSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string(),
   name: z.string(),
   version: versionSchema,
   description: z.string(),
 });
 
 export const flashSkeletonProviderSchema = z.object({
-  providerId: z.string().uuid(),
+  providerId: z.string(),
   inputSchema: z.any(),
   ankiModelConfig: z.object({
     cardTemplates: z.array(
@@ -48,11 +48,11 @@ export const textQueryResponseSchema = z.union([
 
 export const textQueryProviderSchema = z.object({
   inputSchema: z.any(),
-  supportedFlashcardSkeletons: z.array(z.string().uuid()),
+  supportedFlashcardSkeletons: z.array(z.string()),
   fn: z.function(
     z.tuple([
       z.string(), // <- Query
-      z.string().uuid(), // <- Target FlashcardSkeletonId
+      z.string(), // <- Target FlashcardSkeletonId
     ]),
     z.promise(z.array(textQueryResponseSchema)),
   ),
@@ -73,4 +73,5 @@ export const extensionFeatureSchema = z.union(
   // @ts-ignore
   extensionFeatures.map((v) => z.literal(v)),
 );
+
 export type ExtensionFeature = (typeof extensionFeatures)[number];

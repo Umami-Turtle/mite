@@ -1,0 +1,11 @@
+{
+  "base-url": "https://raw.githubusercontent.com/Umami-Turtle/mite/main/extensions/",
+  "extensions": [
+    {
+      "id": "mite-base",
+      "name": "Mite Basics",
+      "version": "0.0.1",
+      "description": "Basic Mite functionality extension"
+    }
+  ]
+}

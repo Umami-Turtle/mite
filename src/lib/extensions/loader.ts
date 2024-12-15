@@ -12,7 +12,7 @@ export const loadRemoteExtension = async (extensionBundledJSURL: string) => {
 };
 
 const EXTENSION_LIST_URL =
-  "https://github.com/Hopeful-ly/mite/raw/main/extensions/index.json";
+  "https://github.com/Umami-Turtle/mite/raw/main/extensions/index.json";
 
 export const fetchRemoteExtensionList = async () => {
   const response = await fetch(EXTENSION_LIST_URL);
