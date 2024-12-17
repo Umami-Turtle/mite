@@ -94,4 +94,4 @@ let extension = {
   },
 } satisfies Extension;
 
-extension;
+export default extension;

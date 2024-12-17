@@ -4,13 +4,17 @@ import { fetch } from "@tauri-apps/plugin-http";
 const loadRemoteExtensionFromURL = async (extensionBundledJSURL: string) => {
   const res = await fetch(extensionBundledJSURL, { method: "GET" });
   const rawExtensionCode = await res.text();
-  const rawExtension = eval(rawExtensionCode);
-  console.log(rawExtension);
+  console.log("Look what i got!\n", rawExtensionCode);
+  const rawExtension = eval(rawExtensionCode)?.default;
+  console.log("Raw girl", rawExtension);
   const response = extensionSchema.safeParse(rawExtension);
   if (!response.success) {
+    console.log("Failed to load extension");
     return;
   }
+  console.log("Extension parsed successfully, loading...");
   const extension = response.data;
+  console.log("Extension:", extension);
   return extension;
 };
 
