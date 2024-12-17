@@ -5,6 +5,7 @@ import {
   ExtensionFeature,
   extensionFeatures,
   extensionFeatureSchema,
+  ExtensionMetadata,
 } from "./schemas";
 
 interface ExtensionsState {
@@ -15,35 +16,33 @@ interface ExtensionsState {
       extension: Extension;
     }
   >;
-  addExtension: (extension: Extension) => void;
-  removeExtension: (extension: Extension) => void;
+  addExtension: (metadata: ExtensionMetadata, extension: Extension) => void;
+  removeExtension: (metadata: ExtensionMetadata) => void;
   turnOnFeature: (extensionId: string, feature: ExtensionFeature) => void;
   turnOffFeature: (extensionId: string, feature: ExtensionFeature) => void;
 }
 
 export const useExtensions = create<ExtensionsState>((set) => ({
   extensions: {},
-  addExtension: (extension) => {
+  addExtension: (metadata, extension) => {
     set((state) =>
       produce(state, (draft) => {
-        draft.extensions[extension.metadata.id] = {
+        draft.extensions[metadata.id] = {
           enabledFeatures: [],
           extension,
         };
         for (const feature of extensionFeatures) {
           if (extension[feature]) {
-            draft.extensions[extension.metadata.id].enabledFeatures.push(
-              feature,
-            );
+            draft.extensions[metadata.id].enabledFeatures.push(feature);
           }
         }
       }),
     );
   },
-  removeExtension: (extension) => {
+  removeExtension: (metadata: ExtensionMetadata) => {
     set((state) =>
       produce(state, (draft) => {
-        delete draft.extensions[extension.metadata.id];
+        delete draft.extensions[metadata.id];
       }),
     );
   },

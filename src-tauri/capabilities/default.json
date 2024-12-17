@@ -5,6 +5,17 @@
   "windows": ["main"],
   "permissions": [
     "core:default",
-    "opener:default"
+    "opener:default",
+    {
+      "identifier": "http:default",
+      "allow": [
+        {
+          "url": "https://github.com/Umami-Turtle/mite/raw/main/extensions/index.json"
+        },
+        {
+          "url": "https://github.com/Umami-Turtle/mite/raw/main/extensions/*/index.js"
+        }
+      ]
+    }
   ]
 }

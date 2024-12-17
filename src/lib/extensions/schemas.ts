@@ -1,4 +1,4 @@
-import z from "zod";
+import z, { ZodType } from "zod";
 import { reactComponentSchema } from "./utils";
 
 export type Version = `${number}.${number}.${number}${"a" | "b" | ""}`;
@@ -14,8 +14,7 @@ export const metadataSchema = z.object({
 });
 
 export const flashSkeletonProviderSchema = z.object({
-  providerId: z.string(),
-  inputSchema: z.any(),
+  inputSchema: z.instanceof(ZodType),
   ankiModelConfig: z.object({
     cardTemplates: z.array(
       z
@@ -29,7 +28,15 @@ export const flashSkeletonProviderSchema = z.object({
     inOrderFields: z.array(z.string()),
     isCloze: z.boolean().optional(),
   }),
-  fn: z.function(z.tuple([z.array(z.any())]), z.promise(z.any())),
+  fn: z.function(
+    z.tuple([
+      z.string(), // The Word/Sentence being queried
+      z.string().optional(), // The Context (e.g. Sentence) of the query
+      z.string().optional(), // The Source (where it's queried, e.g. media name/website url) of the query
+      z.array(z.record(z.string(), z.string())), // The inputs given by text-query providers
+    ]),
+    z.promise(z.any()),
+  ),
 });
 
 export const textQueryVisualResponseSchema = z.object({
@@ -59,11 +66,11 @@ export const textQueryProviderSchema = z.object({
 });
 
 export const extensionSchema = z.object({
-  metadata: metadataSchema,
   flashcardSkeletonProvider: flashSkeletonProviderSchema.optional(),
   textQueryProvider: textQueryProviderSchema.optional(),
 });
 export type Extension = z.infer<typeof extensionSchema>;
+export type ExtensionMetadata = z.infer<typeof metadataSchema>;
 
 export const extensionFeatures = [
   "flashcardSkeletonProvider",
