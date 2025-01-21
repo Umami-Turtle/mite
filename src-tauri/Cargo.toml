@@ -1,7 +1,7 @@
 [package]
 name = "mite"
 version = "0.1.0"
-description = "A Tauri App"
+description = "Language mining tool"
 authors = ["you"]
 edition = "2021"
 
@@ -27,3 +27,4 @@ clipboard_listener = "0.1.0"
 tauri-plugin-clipboard-manager = "2.2.0"
 wayland-clipboard-listener = "0.2.6"
 arboard = { version = "3.4.1", features = ["wayland-data-control"] }
+glib = "0.20.7"
