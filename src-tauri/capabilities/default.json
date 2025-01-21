@@ -16,6 +16,8 @@
           "url": "https://github.com/Umami-Turtle/mite/raw/main/extensions/*/index.js"
         }
       ]
-    }
+    },
+    "clipboard-manager:allow-read-text",
+    "clipboard-manager:default"
   ]
 }

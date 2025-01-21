@@ -1,11 +1,12 @@
 import { ExtensionMetadata, extensionSchema } from "./schemas";
 import { fetch } from "@tauri-apps/plugin-http";
+import { runEvalWithVariables } from "./utils";
 
 const loadRemoteExtensionFromURL = async (extensionBundledJSURL: string) => {
   const res = await fetch(extensionBundledJSURL, { method: "GET" });
   const rawExtensionCode = await res.text();
   console.log("Look what i got!\n", rawExtensionCode);
-  const rawExtension = eval(rawExtensionCode)?.default;
+  const rawExtension = runEvalWithVariables(rawExtensionCode, {}).default;
   console.log("Raw girl", rawExtension);
   const response = extensionSchema.safeParse(rawExtension);
   if (!response.success) {

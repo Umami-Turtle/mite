@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { listen } from "@tauri-apps/api/event";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export const Route = createFileRoute("/media/copy-arena")({
@@ -13,6 +14,18 @@ function RouteComponent() {
   useHotkeys("ctrl+m", () => {
     ref.current?.focus();
   });
+  useEffect(() => {
+    let unlisten: null | (() => any) = null;
+    listen<string>("clipboard", ({ payload: text }) => {
+      console.log("Clipboard Updated!", text);
+      setValue(text);
+    }).then((ul) => {
+      unlisten = ul;
+    });
+    return () => {
+      unlisten?.();
+    };
+  }, []);
 
   return (
     <div>
